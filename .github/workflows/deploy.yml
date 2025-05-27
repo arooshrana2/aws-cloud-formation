@@ -10,6 +10,7 @@ jobs:
   deploy:
     name: Deploy S3 Bucket with CloudFormation
     runs-on: ubuntu-latest
+    environment: dev
 
     steps:
       - name: Checkout repository
