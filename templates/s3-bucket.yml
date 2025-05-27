@@ -5,7 +5,7 @@ Resources:
   MyS3Bucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: ar-unique-s3-bucket-name-123456
+      BucketName: ar-unique-s3-bucket-name
       AccessControl: Private
       VersioningConfiguration:
         Status: Enabled
