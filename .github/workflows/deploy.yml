@@ -1,0 +1,30 @@
+name: Deploy to AWS CloudFormation
+
+on:
+  push:
+    branches:
+      - main  # Trigger deployment on push to main branch
+  workflow_dispatch:  # Allow manual trigger from GitHub UI
+
+jobs:
+  deploy:
+    name: Deploy S3 Bucket with CloudFormation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-southeast-1  # Change to your desired region
+
+      - name: Deploy CloudFormation stack
+        run: |
+          aws cloudformation deploy \
+            --template-file s3-bucket.yml \
+            --stack-name my-s3-bucket-stack \
+            --capabilities CAPABILITY_NAMED_IAM
