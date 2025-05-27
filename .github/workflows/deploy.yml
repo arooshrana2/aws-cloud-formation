@@ -26,6 +26,7 @@ jobs:
       - name: Deploy CloudFormation stack
         run: |
           aws cloudformation deploy \
-            --template-file s3-bucket.yml \
+            --template-file templates/s3-bucket.yml \
             --stack-name my-s3-bucket-stack \
+            --parameter-overrides BucketName=${{ vars.BUCKET_NAME }} Region=${{ vars.MY_AWS_REGION }}
             --capabilities CAPABILITY_NAMED_IAM
