@@ -1,11 +1,17 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: CloudFormation Template to create an S3 bucket
 
+Parameters:
+  Bucket:
+    Type: String
+    Description: Name of the bucket
+    Default: ar-unique-s3-bucket-name
+
 Resources:
   MyS3Bucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: ar-unique-s3-bucket-name
+      BucketName: !Ref Bucket
       AccessControl: Private
       VersioningConfiguration:
         Status: Enabled
