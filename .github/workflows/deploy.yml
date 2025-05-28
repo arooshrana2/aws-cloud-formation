@@ -27,6 +27,6 @@ jobs:
         run: |
           aws cloudformation deploy \
             --template-file templates/s3-bucket.yml \
-            --stack-name my-s3-bucket-stack \
-            --parameter-overrides BucketName=ar-bucket-test-new-name Region=${{ vars.MY_AWS_REGION }} \
+            --stack-name my-s3-bucket-stack-1 \
+            --parameter-overrides BucketName=ar-bucket-test-new-name-1 Region=${{ vars.MY_AWS_REGION }} \
             --capabilities CAPABILITY_NAMED_IAM
