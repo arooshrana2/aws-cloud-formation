@@ -25,9 +25,9 @@ jobs:
 
       - name: Deploy CloudFormation stack
         run: |
-          # aws cloudformation deploy \
-          #   --template-file templates/s3-bucket-new.yml \
-          #   --stack-name my-s3-bucket-stack-2 \
-          #   --parameter-overrides Region=${{ vars.MY_AWS_REGION }} \
-          #   --capabilities CAPABILITY_NAMED_IAM
-          aws cloudformation delete-stack --stack-name my-s3-bucket-stack-2
+          aws cloudformation deploy \
+            --template-file templates/s3-bucket.yml \
+            --stack-name my-s3-bucket-stack \
+            --parameter-overrides Region=${{ vars.MY_AWS_REGION }} \
+            --capabilities CAPABILITY_NAMED_IAM
+          # aws cloudformation delete-stack --stack-name my-s3-bucket-stack-2
