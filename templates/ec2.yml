@@ -2,16 +2,25 @@ AWSTemplateFormatVersion: '2010-09-09'
 Description: EC2 Instances
 
 Parameters:
-  PublicSubnetId:
+  SubnetId:
     Type: String
-  PrivateSubnet1Id:
+  SubnetType:
     Type: String
-  PrivateSubnet3Id:
+    AllowedValues:
+      - public
+      - private
+  Environment:
     Type: String
+    Description: Environment name
+  TagRegion:
+    Type: String
+    Description: Value for tag Region
   Size:
     Type: String
-    AllowableValues:
-      - t2.*
+    AllowedValues:
+      - t2.nano
+      - t2.micro
+      - t2.small
     Default: t2.micro
 
 Resources:
@@ -19,18 +28,20 @@ Resources:
     Type: AWS::EC2::Instance
     Properties:
       InstanceType: !Ref Size
-      SubnetId: !Ref PublicSubnetId
-      ImageId: ami-0abcdef1234567890  # Use a valid public AMI
+      SubnetId: !Ref SubnetId
+      ImageId: ami-01f75d3286cb036eb  # Use a valid public AMI
       Tags:
         - Key: Name
-          Value: Public-EC2
-
-  PrivatePostgresEC2:
-    Type: AWS::EC2::Instance
-    Properties:
-      InstanceType: t2.micro
-      SubnetId: !Ref PrivateSubnet3Id
-      ImageId: ami-0abcdef1234567890
-      Tags:
-        - Key: Name
-          Value: Private-Postgres-EC2
+          Value: !Sub "EC2-${SubnetType}-${Environment}-${TagRegion}"
+        - Key: Env
+          Value: !Ref Environment
+        - Key: Region
+          Value: !Ref TagRegion
+        - Key: Apps
+          Value: NMS
+        - Key: Owner
+          Value: NSG Dev Team
+        - Key: ITSM
+          Value:
+        - Key: CostCentre
+          Value:

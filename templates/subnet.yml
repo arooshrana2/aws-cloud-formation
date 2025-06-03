@@ -1,0 +1,54 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Subnet inside VPC
+
+Parameters:
+  VpcId:
+    Type: String
+  AvailabilityZone:
+    Type: String
+  Environment:
+    Type: String
+    Description: Environment name
+  TagRegion:
+    Type: String
+    Description: Value for tag Region
+  CidrBlock:
+    Type: String
+    Description: CIDR block for subnet
+  IsPubIp:
+    Type: String
+    AllowedValues:
+      - true
+      - false
+    Default: false
+    Description: Whether to map public IP on instance launch
+
+Resources:
+  PubOrPvtSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VpcId
+      CidrBlock: !Ref CidrBlock
+      AvailabilityZone: !Ref AvailabilityZone
+      MapPublicIpOnLaunch: !Ref IsPubIp
+      Tags:
+        - Key: Name
+          Value: !Sub "sub-pub1-vpc-nms-${Environment}-${TagRegion}"
+        - Key: Env
+          Value: !Ref Environment
+        - Key: Region
+          Value: !Ref TagRegion
+        - Key: Apps
+          Value: NMS
+        - Key: Owner
+          Value: NSG Dev Team
+        - Key: ITSM
+          Value:
+        - Key: CostCentre
+          Value:
+
+Outputs:
+  PubOrPvtSubnetId:
+    Value: !Ref PubOrPvtSubnet
+    Export:
+      Name: PubOrPvtSubnet

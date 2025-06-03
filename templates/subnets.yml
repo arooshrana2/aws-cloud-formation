@@ -6,96 +6,114 @@ Parameters:
     Type: String
   AvailabilityZone:
     Type: String
+  Environment:
+    Type: String
+    Description: Environment name
+  TagRegion:
+    Type: String
+    Description: Value for tag Region
+  PublicCidrBlock1:
+    Type: String
+    Description: CIDR block for public subnet 1
+  PrivateCidrBlock1:
+    Type: String
+    Description: CIDR block for private subnet 1
+  PrivateCidrBlock2:
+    Type: String
+    Description: CIDR block for private subnet 2
+  PrivateCidrBlock3:
+    Type: String
+    Description: CIDR block for private subnet 3
 
 Resources:
   PublicSubnet1:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref VpcId
-      CidrBlock: 10.0.0.0/24
+      CidrBlock: !Ref PublicCidrBlock1
       AvailabilityZone: !Ref AvailabilityZone
       MapPublicIpOnLaunch: true
       Tags:
         - Key: Name
-          Value: sub-pub1-vpc-nms-dev-me-south-1a
+          Value: !Sub "sub-pub1-vpc-nms-${Environment}-${TagRegion}"
         - Key: Env
-          Value: dev
+          Value: !Ref Environment
         - Key: Region
-          Value: me-south-1a
+          Value: !Ref Region
         - Key: Apps
           Value: NMS
         - Key: Owner
-          Value: Oreta Dev Team
+          Value: NSG Dev Team
         - Key: ITSM
-          Value: ITSM-1234
+          Value:
         - Key: CostCentre
-          Value: CC-1234
+          Value:
 
   PrivateSubnet1:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref VpcId
-      CidrBlock: 10.0.1.0/24
+      CidrBlock: !Ref PrivateCidrBlock1
       AvailabilityZone: !Ref AvailabilityZone
       Tags:
         - Key: Name
-          Value: sub-pvt1-vpc-nms-dev-me-south-1a
+          Value: !Sub "sub-pvt1-vpc-nms-${Environment}-${TagRegion}"
         - Key: Env
-          Value: dev
+          Value: !Ref Environment
         - Key: Region
-          Value: me-south-1a
+          Value: !Ref TagRegion
         - Key: Apps
           Value: NMS
         - Key: Owner
-          Value: Oreta Dev Team
+          Value: NSG Dev Team
         - Key: ITSM
-          Value: ITSM-1234
+          Value:
         - Key: CostCentre
-          Value: CC-1234
+          Value:
 
   PrivateSubnet2:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref VpcId
-      CidrBlock: 10.0.2.0/24
+      CidrBlock: !Ref PrivateCidrBlock2
       AvailabilityZone: !Ref AvailabilityZone
       Tags:
         - Key: Name
-          Value: sub-pvt2-vpc-nms-dev-me-south-1a
+          Value: !Sub "sub-pvt2-vpc-nms-${Environment}-${TagRegion}"
         - Key: Env
-          Value: dev
+          Value: !Ref Environment
         - Key: Region
-          Value: me-south-1a
+          Value: !Ref TagRegion
         - Key: Apps
           Value: NMS
         - Key: Owner
-          Value: Oreta Dev Team
+          Value: NSG Dev Team
         - Key: ITSM
-          Value: ITSM-1234
+          Value:
         - Key: CostCentre
-          Value: CC-1234
+          Value:
 
   PrivateSubnet3:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref VpcId
-      CidrBlock: 10.0.3.0/24
+      CidrBlock: !Ref PrivateCidrBlock3
       AvailabilityZone: !Ref AvailabilityZone
       Tags:
         - Key: Name
-          Value: sub-pvt3-vpc-nms-dev-me-south-1a
+          Value: !Sub "sub-pvt3-vpc-nms-${Environment}-${TagRegion}"
         - Key: Env
-          Value: dev
+          Value: !Ref Environment
         - Key: Region
-          Value: me-south-1a
+          Value: !Ref TagRegion
         - Key: Apps
           Value: NMS
         - Key: Owner
-          Value: Oreta Dev Team
+          Value: NSG Dev Team
         - Key: ITSM
-          Value: ITSM-1234
+          Value:
         - Key: CostCentre
-          Value: CC-1234
+          Value:
 
 Outputs:
   PublicSubnetId:
