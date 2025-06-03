@@ -26,9 +26,9 @@ jobs:
       - name: Deploy CloudFormation stack
         run: |
           # aws s3 mb s3://ar-nsg-cf-templates --region me-south-1
-          # aws s3 cp templates/vpc.yml s3://ar-nsg-cf-templates/
-          # aws s3 cp templates/subnet.yml s3://ar-nsg-cf-templates/
-          # aws s3 cp templates/ec2.yml s3://ar-nsg-cf-templates/
+          aws s3 cp templates/vpc.yml s3://ar-nsg-cf-templates/
+          aws s3 cp templates/subnet.yml s3://ar-nsg-cf-templates/
+          aws s3 cp templates/ec2.yml s3://ar-nsg-cf-templates/
           aws cloudformation deploy \
             --template-file templates/main1.yml \
             --stack-name vpc-subnet-ec2-stack \
