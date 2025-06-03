@@ -25,13 +25,13 @@ jobs:
 
       - name: Deploy CloudFormation stack
         run: |
-          aws s3 mb s3://cf-templates --region me-south-1
-          aws s3 cp vpc.yml s3://cf-templates/
-          aws s3 cp subnet.yml s3://cf-templates/
-          aws s3 cp ec2.yml s3://cf-templates/
+          aws s3 mb s3://ar-nsg-cf-templates --region me-south-1
+          aws s3 cp vpc.yml s3://ar-nsg-cf-templates/
+          aws s3 cp subnet.yml s3://ar-nsg-cf-templates/
+          aws s3 cp ec2.yml s3://ar-nsg-cf-templates/
           aws cloudformation deploy \
             --template-file templates/main1.yml \
             --stack-name vpc-subnet-ec2-stack \
-            --parameter-overrides TemplateBucket=cf-templates \
+            --parameter-overrides TemplateBucket=ar-nsg-cf-templates \
             --capabilities CAPABILITY_NAMED_IAM
           # aws cloudformation delete-stack --stack-name my-s3-bucket-stack
