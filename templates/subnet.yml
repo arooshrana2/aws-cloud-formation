@@ -43,9 +43,9 @@ Resources:
         - Key: Owner
           Value: NSG Dev Team
         - Key: ITSM
-          Value:
+          Value: ''
         - Key: CostCentre
-          Value:
+          Value: ''
 
 Outputs:
   PubOrPvtSubnetId:
