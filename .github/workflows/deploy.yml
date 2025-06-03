@@ -34,5 +34,8 @@ jobs:
             --stack-name vpc-subnet-ec2-stack \
             --parameter-overrides TemplateBucket=ar-nsg-cf-templates \
             --capabilities CAPABILITY_NAMED_IAM
-          aws cloudformation describe-stack-events --stack-name vpc-subnet-ec2-stack
           # aws cloudformation delete-stack --stack-name my-s3-bucket-stack
+      - name: Show Stack Events
+        if: always()
+        run: |
+          aws cloudformation describe-stack-events --stack-name vpc-subnet-ec2-stack
