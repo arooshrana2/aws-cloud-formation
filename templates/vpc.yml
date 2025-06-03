@@ -1,0 +1,56 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: VPC with Internet Gateway
+
+Resources:
+  MyVPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      Tags:
+        - Key: Name
+          Value: vpc-nms-dev-me-south-1a
+        - Key: Env
+          Value: dev
+        - Key: Region
+          Value: me-south-1a
+        - Key: Apps
+          Value: NMS
+        - Key: Owner
+          Value: Oreta Dev Team
+        - Key: ITSM
+          Value: ITSM-1234
+        - Key: CostCentre
+          Value: CC-1234
+
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: igw-nms-dev-me-south-1a
+        - Key: Env
+          Value: dev
+        - Key: Region
+          Value: me-south-1a
+        - Key: Apps
+          Value: NMS
+        - Key: Owner
+          Value: Oreta Dev Team
+        - Key: ITSM
+          Value: ITSM-1234
+        - Key: CostCentre
+          Value: CC-1234
+
+  VPCGatewayAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref MyVPC
+      InternetGatewayId: !Ref InternetGateway
+
+Outputs:
+  VpcId:
+    Value: !Ref MyVPC
+    Export:
+      Name: MyVPCID

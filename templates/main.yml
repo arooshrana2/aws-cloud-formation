@@ -1,0 +1,52 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Modular main stack to deploy VPC, Subnets, Route Tables, EC2, and RDS
+
+Parameters:
+  TemplateBucket:
+    Type: String
+    Description: S3 bucket where the modular templates are stored
+
+Resources:
+  VPCStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Sub https://${TemplateBucket}.s3.amazonaws.com/vpc.yml
+
+  SubnetStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Sub https://${TemplateBucket}.s3.amazonaws.com/subnets.yml
+      Parameters:
+        VpcId: !GetAtt VPCStack.Outputs.VpcId
+        AvailabilityZone: me-south-1a
+
+  RouteTableStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Sub https://${TemplateBucket}.s3.amazonaws.com/route-tables.yml
+      Parameters:
+        VpcId: !GetAtt VPCStack.Outputs.VpcId
+        PublicSubnetId: !GetAtt SubnetStack.Outputs.PublicSubnetId
+        PrivateSubnetIds: !GetAtt SubnetStack.Outputs.PrivateSubnetIds
+
+  # EC2Stack:
+  #   Type: AWS::CloudFormation::Stack
+  #   Properties:
+  #     TemplateURL: !Sub https://${TemplateBucket}.s3.amazonaws.com/ec2.yml
+  #     Parameters:
+  #       PublicSubnetId: !GetAtt SubnetStack.Outputs.PublicSubnetId
+  #       PrivateSubnet1Id: !GetAtt SubnetStack.Outputs.PrivateSubnet1Id
+  #       PrivateSubnet3Id: !GetAtt SubnetStack.Outputs.PrivateSubnet3Id
+
+  RDSStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Sub https://${TemplateBucket}.s3.amazonaws.com/rds.yml
+      Parameters:
+        PrivateSubnet1Id: !GetAtt SubnetStack.Outputs.PrivateSubnet1Id
+        PrivateSubnet2Id: !GetAtt SubnetStack.Outputs.PrivateSubnet2Id
+
+Outputs:
+  VpcId:
+    Description: VPC ID
+    Value: !GetAtt VPCStack.Outputs.VpcId

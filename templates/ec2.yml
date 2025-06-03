@@ -1,0 +1,36 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: EC2 Instances
+
+Parameters:
+  PublicSubnetId:
+    Type: String
+  PrivateSubnet1Id:
+    Type: String
+  PrivateSubnet3Id:
+    Type: String
+  Size:
+    Type: String
+    AllowableValues:
+      - t2.*
+    Default: t2.micro
+
+Resources:
+  PublicEC2:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: !Ref Size
+      SubnetId: !Ref PublicSubnetId
+      ImageId: ami-0abcdef1234567890  # Use a valid public AMI
+      Tags:
+        - Key: Name
+          Value: Public-EC2
+
+  PrivatePostgresEC2:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t2.micro
+      SubnetId: !Ref PrivateSubnet3Id
+      ImageId: ami-0abcdef1234567890
+      Tags:
+        - Key: Name
+          Value: Private-Postgres-EC2

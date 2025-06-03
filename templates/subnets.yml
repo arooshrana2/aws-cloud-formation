@@ -1,0 +1,110 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Subnets inside VPC
+
+Parameters:
+  VpcId:
+    Type: String
+  AvailabilityZone:
+    Type: String
+
+Resources:
+  PublicSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VpcId
+      CidrBlock: 10.0.0.0/24
+      AvailabilityZone: !Ref AvailabilityZone
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: sub-pub1-vpc-nms-dev-me-south-1a
+        - Key: Env
+          Value: dev
+        - Key: Region
+          Value: me-south-1a
+        - Key: Apps
+          Value: NMS
+        - Key: Owner
+          Value: Oreta Dev Team
+        - Key: ITSM
+          Value: ITSM-1234
+        - Key: CostCentre
+          Value: CC-1234
+
+  PrivateSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VpcId
+      CidrBlock: 10.0.1.0/24
+      AvailabilityZone: !Ref AvailabilityZone
+      Tags:
+        - Key: Name
+          Value: sub-pvt1-vpc-nms-dev-me-south-1a
+        - Key: Env
+          Value: dev
+        - Key: Region
+          Value: me-south-1a
+        - Key: Apps
+          Value: NMS
+        - Key: Owner
+          Value: Oreta Dev Team
+        - Key: ITSM
+          Value: ITSM-1234
+        - Key: CostCentre
+          Value: CC-1234
+
+  PrivateSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VpcId
+      CidrBlock: 10.0.2.0/24
+      AvailabilityZone: !Ref AvailabilityZone
+      Tags:
+        - Key: Name
+          Value: sub-pvt2-vpc-nms-dev-me-south-1a
+        - Key: Env
+          Value: dev
+        - Key: Region
+          Value: me-south-1a
+        - Key: Apps
+          Value: NMS
+        - Key: Owner
+          Value: Oreta Dev Team
+        - Key: ITSM
+          Value: ITSM-1234
+        - Key: CostCentre
+          Value: CC-1234
+
+  PrivateSubnet3:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VpcId
+      CidrBlock: 10.0.3.0/24
+      AvailabilityZone: !Ref AvailabilityZone
+      Tags:
+        - Key: Name
+          Value: sub-pvt3-vpc-nms-dev-me-south-1a
+        - Key: Env
+          Value: dev
+        - Key: Region
+          Value: me-south-1a
+        - Key: Apps
+          Value: NMS
+        - Key: Owner
+          Value: Oreta Dev Team
+        - Key: ITSM
+          Value: ITSM-1234
+        - Key: CostCentre
+          Value: CC-1234
+
+Outputs:
+  PublicSubnetId:
+    Value: !Ref PublicSubnet1
+  PrivateSubnet1Id:
+    Value: !Ref PrivateSubnet1
+  PrivateSubnet2Id:
+    Value: !Ref PrivateSubnet2
+  PrivateSubnet3Id:
+    Value: !Ref PrivateSubnet3
+  PrivateSubnetIds:
+    Value: !Join [ ",", [ !Ref PrivateSubnet1, !Ref PrivateSubnet2, !Ref PrivateSubnet3 ]]
