@@ -1,5 +1,5 @@
-AWSTemplateFormatVersion: '2010-09-09'
-Description: 'Main stack linking VPC, Subnets, and EC2 using nested stacks'
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "Main stack linking VPC, Subnets, and EC2 using nested stacks"
 
 Parameters:
   TemplateBucket:
@@ -24,6 +24,7 @@ Resources:
       TemplateURL: !Sub https://${TemplateBucket}.s3.amazonaws.com/subnet.yml
       Parameters:
         VpcId: !GetAtt VPCStack.Outputs.VpcId
+        ExportName: sub-pub-nsg-me-south-1a
         AvailabilityZone: me-south-1a
         Environment: dev
         TagRegion: me-south-1a
@@ -37,6 +38,7 @@ Resources:
       TemplateURL: !Sub https://${TemplateBucket}.s3.amazonaws.com/subnet.yml
       Parameters:
         VpcId: !GetAtt VPCStack.Outputs.VpcId
+        ExportName: sub-pvt-nsg-me-south-1a
         AvailabilityZone: me-south-1a
         Environment: dev
         TagRegion: me-south-1a
