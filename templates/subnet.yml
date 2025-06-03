@@ -22,6 +22,9 @@ Parameters:
       - false
     Default: false
     Description: Whether to map public IP on instance launch
+  ExportName:
+    Type: String
+    Description: Name to export
 
 Resources:
   PubOrPvtSubnet:
@@ -51,4 +54,4 @@ Outputs:
   PubOrPvtSubnetId:
     Value: !Ref PubOrPvtSubnet
     Export:
-      Name: PubOrPvtSubnet
+      Name: !Ref ExportName
