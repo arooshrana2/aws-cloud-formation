@@ -22,6 +22,9 @@ Parameters:
       - t3.micro
       - t3.small
     Default: t3.micro
+  AMIID:
+    Type: String
+    Default: ami-01f75d3286cb036eb
 
 Resources:
   PublicEC2:
@@ -29,7 +32,7 @@ Resources:
     Properties:
       InstanceType: !Ref Size
       SubnetId: !Ref SubnetId
-      ImageId: ami-01f75d3286cb036eb  # Use a valid public AMI
+      ImageId: !Ref AMIID  # Use a valid public AMI
       Tags:
         - Key: Name
           Value: !Sub "EC2-${SubnetType}-${Environment}-${TagRegion}"

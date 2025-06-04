@@ -5,15 +5,21 @@ Parameters:
   TemplateBucket:
     Type: String
     Description: S3 bucket name containing templates
+  Env:
+    Type: String
+    Description: Environment
+  DeployDir:
+    Type: String
+    Description: Deployment directory
 
 Resources:
   VPCStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: !Sub https://${TemplateBucket}.s3.amazonaws.com/vpc.yml
+      TemplateURL: !Sub https://${TemplateBucket}.s3.amazonaws.com/${DeployDir}/vpc.yml
       Parameters:
         VPCCidrBlock: 10.127.0.0/20
-        Environment: dev
+        Environment: !Ref Env
         TagName: nms-me-south-1
         TagRegion: me-south-1
 
@@ -21,12 +27,12 @@ Resources:
     Type: AWS::CloudFormation::Stack
     DependsOn: VPCStack
     Properties:
-      TemplateURL: !Sub https://${TemplateBucket}.s3.amazonaws.com/subnet.yml
+      TemplateURL: !Sub https://${TemplateBucket}.s3.amazonaws.com/${DeployDir}/subnet.yml
       Parameters:
         VpcId: !GetAtt VPCStack.Outputs.VpcId
         ExportName: sub-pub-nsg-me-south-1a
         AvailabilityZone: me-south-1a
-        Environment: dev
+        Environment: !Ref Env
         TagRegion: me-south-1a
         CidrBlock: 10.127.0.0/24
         IsPubIp: true
@@ -35,12 +41,12 @@ Resources:
     Type: AWS::CloudFormation::Stack
     DependsOn: VPCStack
     Properties:
-      TemplateURL: !Sub https://${TemplateBucket}.s3.amazonaws.com/subnet.yml
+      TemplateURL: !Sub https://${TemplateBucket}.s3.amazonaws.com/${DeployDir}/subnet.yml
       Parameters:
         VpcId: !GetAtt VPCStack.Outputs.VpcId
         ExportName: sub-pvt-nsg-me-south-1a
         AvailabilityZone: me-south-1a
-        Environment: dev
+        Environment: !Ref Env
         TagRegion: me-south-1a
         CidrBlock: 10.127.1.0/24
         IsPubIp: false
@@ -49,11 +55,11 @@ Resources:
     Type: AWS::CloudFormation::Stack
     DependsOn: PublicSubnetStack
     Properties:
-      TemplateURL: !Sub https://${TemplateBucket}.s3.amazonaws.com/ec2.yml
+      TemplateURL: !Sub https://${TemplateBucket}.s3.amazonaws.com/${DeployDir}/ec2.yml
       Parameters:
         SubnetId: !GetAtt PublicSubnetStack.Outputs.PubOrPvtSubnetId
         SubnetType: public
-        Environment: dev
+        Environment: !Ref Env
         TagRegion: me-south-1a
         Size: t3.micro
 

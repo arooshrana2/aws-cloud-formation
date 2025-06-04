@@ -1,0 +1,50 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: EC2 Instances
+
+Parameters:
+  SubnetId:
+    Type: String
+  SubnetType:
+    Type: String
+    AllowedValues:
+      - public
+      - private
+  Environment:
+    Type: String
+    Description: Environment name
+  TagRegion:
+    Type: String
+    Description: Value for tag Region
+  Size:
+    Type: String
+    AllowedValues:
+      - t3.nano
+      - t3.micro
+      - t3.small
+    Default: t3.micro
+  AMIID:
+    Type: String
+    Default: ami-01f75d3286cb036eb
+
+Resources:
+  PublicEC2:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: !Ref Size
+      SubnetId: !Ref SubnetId
+      ImageId: !Ref AMIID  # Use a valid public AMI
+      Tags:
+        - Key: Name
+          Value: !Sub "EC2-${SubnetType}-${Environment}-${TagRegion}"
+        - Key: Env
+          Value: !Ref Environment
+        - Key: Region
+          Value: !Ref TagRegion
+        - Key: Apps
+          Value: NMS
+        - Key: Owner
+          Value: NSG Dev Team
+        - Key: ITSM
+          Value: ''
+        - Key: CostCentre
+          Value: ''
