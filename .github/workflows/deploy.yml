@@ -41,7 +41,7 @@ jobs:
       - name: Deploy CloudFormation stack
         run: |
           aws cloudformation deploy \
-            --template-file templates/main1.yml \
+            --template-file ${DEPLOY_DIR}/${ENVIRONMENT}/templates/main1.yml \
             --stack-name ${STACK_NAME} \
             --parameter-overrides TemplateBucket=${TEMPLATE_BUCKET} \
             --capabilities CAPABILITY_NAMED_IAM
