@@ -18,10 +18,10 @@ Parameters:
   Size:
     Type: String
     AllowedValues:
-      - t2.nano
-      - t2.micro
-      - t2.small
-    Default: t2.micro
+      - t3.nano
+      - t3.micro
+      - t3.small
+    Default: t3.micro
 
 Resources:
   PublicEC2:
