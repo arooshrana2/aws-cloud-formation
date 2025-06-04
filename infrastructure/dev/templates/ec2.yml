@@ -48,3 +48,10 @@ Resources:
           Value: ''
         - Key: CostCentre
           Value: ''
+
+Outputs:
+  PublicEC2InstanceId:
+    Description: Public EC2 Instance ID
+    Value: !GetAtt PublicEC2.InstanceId
+    Export:
+      Name: !Sub "${Environment}PublicEC2InstanceId"
