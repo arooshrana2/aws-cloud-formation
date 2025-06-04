@@ -1,4 +1,4 @@
-AWSTemplateFormatVersion: '2010-09-09'
+AWSTemplateFormatVersion: "2010-09-09"
 Description: EC2 Instances
 
 Parameters:
@@ -32,7 +32,7 @@ Resources:
     Properties:
       InstanceType: !Ref Size
       SubnetId: !Ref SubnetId
-      ImageId: !Ref AMIID  # Use a valid public AMI
+      ImageId: !Ref AMIID # Use a valid public AMI
       Tags:
         - Key: Name
           Value: !Sub "EC2-${SubnetType}-${Environment}-${TagRegion}"
@@ -45,6 +45,13 @@ Resources:
         - Key: Owner
           Value: NSG Dev Team
         - Key: ITSM
-          Value: ''
+          Value: ""
         - Key: CostCentre
-          Value: ''
+          Value: ""
+
+Outputs:
+  PublicEC2InstanceId:
+    Description: Public EC2 Instance ID
+    Value: !GetAtt PublicEC2.InstanceId
+    Export:
+      Name: !Sub "${Environment}PublicEC2InstanceId"

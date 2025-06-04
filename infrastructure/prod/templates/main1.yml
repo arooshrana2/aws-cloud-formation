@@ -22,6 +22,7 @@ Resources:
         Environment: !Ref Env
         TagName: nms-me-south-1
         TagRegion: me-south-1
+        ExportName: vpc-nsg-${Env}-me-south-1
 
   PublicSubnetStack:
     Type: AWS::CloudFormation::Stack
@@ -30,7 +31,7 @@ Resources:
       TemplateURL: !Sub https://${TemplateBucket}.s3.amazonaws.com/${DeployDir}/subnet.yml
       Parameters:
         VpcId: !GetAtt VPCStack.Outputs.VpcId
-        ExportName: sub-pub-nsg-me-south-1a
+        ExportName: sub-pub-nsg-${Env}-me-south-1a
         AvailabilityZone: me-south-1a
         Environment: !Ref Env
         TagRegion: me-south-1a
@@ -44,7 +45,7 @@ Resources:
       TemplateURL: !Sub https://${TemplateBucket}.s3.amazonaws.com/${DeployDir}/subnet.yml
       Parameters:
         VpcId: !GetAtt VPCStack.Outputs.VpcId
-        ExportName: sub-pvt-nsg-me-south-1a
+        ExportName: sub-pvt-nsg-${Env}-me-south-1a
         AvailabilityZone: me-south-1a
         Environment: !Ref Env
         TagRegion: me-south-1a
@@ -62,6 +63,7 @@ Resources:
         Environment: !Ref Env
         TagRegion: me-south-1a
         Size: t3.micro
+        ExportName: ec2-sub-pvt-nsg-${Env}-me-south-1a
 
 Outputs:
   VpcId:
