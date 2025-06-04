@@ -14,7 +14,7 @@ jobs:
     environment: ${{ github.ref_name == 'main' && 'prod' || 'dev' }}
 
     env:
-      AWS_REGION: me-south-1  # Change to your desired region
+      AWS_REGION: me-south-1 # Change to your desired region
       TEMPLATE_BUCKET: ar-nsg-cf-templates
       DEPLOY_DIR: infrastructure
       STACK_NAME: vpc-subnet-ec2-stack
@@ -31,23 +31,25 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
+      - name: Create S3 bucket for Templates
+        run: |
+          aws s3 mb s3://${TEMPLATE_BUCKET} --region ${AWS_REGION} || true
+
       - name: Upload Templates to S3
         run: |
-            # aws s3 mb s3://${TEMPLATE_BUCKET} --region me-south-1
-            aws s3 cp ${DEPLOY_DIR}/${ENVIRONMENT}/templates/vpc.yml s3://${TEMPLATE_BUCKET}/${DEPLOY_DIR}/
-            aws s3 cp ${DEPLOY_DIR}/${ENVIRONMENT}/templates/subnet.yml s3://${TEMPLATE_BUCKET}/${DEPLOY_DIR}/
-            aws s3 cp ${DEPLOY_DIR}/${ENVIRONMENT}/templates/ec2.yml s3://${TEMPLATE_BUCKET}/${DEPLOY_DIR}/
+          aws s3 cp ${DEPLOY_DIR}/${ENVIRONMENT}/templates/vpc.yml s3://${TEMPLATE_BUCKET}/${DEPLOY_DIR}/${ENVIRONMENT}/
+          aws s3 cp ${DEPLOY_DIR}/${ENVIRONMENT}/templates/subnet.yml s3://${TEMPLATE_BUCKET}/${DEPLOY_DIR}/${ENVIRONMENT}/
+          aws s3 cp ${DEPLOY_DIR}/${ENVIRONMENT}/templates/ec2.yml s3://${TEMPLATE_BUCKET}/${DEPLOY_DIR}/${ENVIRONMENT}/
 
       - name: Deploy CloudFormation stack
         run: |
           aws cloudformation deploy \
             --template-file ${DEPLOY_DIR}/${ENVIRONMENT}/templates/main1.yml \
-            --stack-name ${STACK_NAME} \
-            --parameter-overrides TemplateBucket=${TEMPLATE_BUCKET} \
+            --stack-name ${STACK_NAME}-${ENVIRONMENT} \
+            --parameter-overrides TemplateBucket=${TEMPLATE_BUCKET} Env=${ENVIRONMENT} DEPLOY_DIR=${DEPLOY_DIR} \
             --capabilities CAPABILITY_NAMED_IAM
-          # aws cloudformation delete-stack --stack-name my-s3-bucket-stack
 
       - name: Show Stack Events
         if: always()
         run: |
-          aws cloudformation describe-stack-events --stack-name ${STACK_NAME}
+          aws cloudformation describe-stack-events --stack-name ${STACK_NAME}-${ENVIRONMENT}
