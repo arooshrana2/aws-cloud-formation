@@ -37,14 +37,14 @@ jobs:
 
       - name: Upload Templates to S3
         run: |
-          aws s3 cp ${DEPLOY_DIR}/${ENVIRONMENT}/templates/vpc.yml s3://${TEMPLATE_BUCKET}/${DEPLOY_DIR}/${ENVIRONMENT}/
-          aws s3 cp ${DEPLOY_DIR}/${ENVIRONMENT}/templates/subnet.yml s3://${TEMPLATE_BUCKET}/${DEPLOY_DIR}/${ENVIRONMENT}/
-          aws s3 cp ${DEPLOY_DIR}/${ENVIRONMENT}/templates/ec2.yml s3://${TEMPLATE_BUCKET}/${DEPLOY_DIR}/${ENVIRONMENT}/
+          aws s3 cp ${DEPLOY_DIR}/templates/vpc.yml s3://${TEMPLATE_BUCKET}/${DEPLOY_DIR}/${ENVIRONMENT}/
+          aws s3 cp ${DEPLOY_DIR}/templates/subnet.yml s3://${TEMPLATE_BUCKET}/${DEPLOY_DIR}/${ENVIRONMENT}/
+          aws s3 cp ${DEPLOY_DIR}/templates/ec2.yml s3://${TEMPLATE_BUCKET}/${DEPLOY_DIR}/${ENVIRONMENT}/
 
       - name: Deploy CloudFormation stack
         run: |
           aws cloudformation deploy \
-            --template-file ${DEPLOY_DIR}/${ENVIRONMENT}/templates/main1.yml \
+            --template-file ${DEPLOY_DIR}/templates/main1.yml \
             --stack-name ${STACK_NAME}-${ENVIRONMENT} \
             --parameter-overrides TemplateBucket=${TEMPLATE_BUCKET} Env=${ENVIRONMENT} DeployDir=${DEPLOY_DIR} \
             --capabilities CAPABILITY_NAMED_IAM
