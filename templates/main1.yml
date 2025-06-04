@@ -55,7 +55,7 @@ Resources:
         SubnetType: public
         Environment: dev
         TagRegion: me-south-1a
-        Size: t2.micro
+        Size: t3.micro
 
 Outputs:
   VpcId:
