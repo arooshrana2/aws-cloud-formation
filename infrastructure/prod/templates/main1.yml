@@ -16,22 +16,22 @@ Resources:
   VPCStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: !Sub https://${TemplateBucket}.s3.amazonaws.com/${DeployDir}/vpc.yml
+      TemplateURL: !Sub https://${TemplateBucket}.s3.amazonaws.com/${DeployDir}/${Env}/vpc.yml
       Parameters:
         VPCCidrBlock: 10.127.0.0/20
         Environment: !Ref Env
         TagName: nms-me-south-1
         TagRegion: me-south-1
-        ExportName: vpc-nsg-${Env}-me-south-1
+        ExportName: !Sub vpc-nsg-${Env}-me-south-1
 
   PublicSubnetStack:
     Type: AWS::CloudFormation::Stack
     DependsOn: VPCStack
     Properties:
-      TemplateURL: !Sub https://${TemplateBucket}.s3.amazonaws.com/${DeployDir}/subnet.yml
+      TemplateURL: !Sub https://${TemplateBucket}.s3.amazonaws.com/${DeployDir}/${Env}/subnet.yml
       Parameters:
         VpcId: !GetAtt VPCStack.Outputs.VpcId
-        ExportName: sub-pub-nsg-${Env}-me-south-1a
+        ExportName: !Sub sub-pub-nsg-${Env}-me-south-1a
         AvailabilityZone: me-south-1a
         Environment: !Ref Env
         TagRegion: me-south-1a
@@ -42,10 +42,10 @@ Resources:
     Type: AWS::CloudFormation::Stack
     DependsOn: VPCStack
     Properties:
-      TemplateURL: !Sub https://${TemplateBucket}.s3.amazonaws.com/${DeployDir}/subnet.yml
+      TemplateURL: !Sub https://${TemplateBucket}.s3.amazonaws.com/${DeployDir}/${Env}/subnet.yml
       Parameters:
         VpcId: !GetAtt VPCStack.Outputs.VpcId
-        ExportName: sub-pvt-nsg-${Env}-me-south-1a
+        ExportName: !Sub sub-pvt-nsg-${Env}-me-south-1a
         AvailabilityZone: me-south-1a
         Environment: !Ref Env
         TagRegion: me-south-1a
@@ -56,14 +56,13 @@ Resources:
     Type: AWS::CloudFormation::Stack
     DependsOn: PublicSubnetStack
     Properties:
-      TemplateURL: !Sub https://${TemplateBucket}.s3.amazonaws.com/${DeployDir}/ec2.yml
+      TemplateURL: !Sub https://${TemplateBucket}.s3.amazonaws.com/${DeployDir}/${Env}/ec2.yml
       Parameters:
         SubnetId: !GetAtt PublicSubnetStack.Outputs.PubOrPvtSubnetId
         SubnetType: public
         Environment: !Ref Env
         TagRegion: me-south-1a
         Size: t3.micro
-        ExportName: ec2-sub-pvt-nsg-${Env}-me-south-1a
 
 Outputs:
   VpcId:
