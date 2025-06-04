@@ -46,7 +46,7 @@ jobs:
           aws cloudformation deploy \
             --template-file ${DEPLOY_DIR}/${ENVIRONMENT}/templates/main1.yml \
             --stack-name ${STACK_NAME}-${ENVIRONMENT} \
-            --parameter-overrides TemplateBucket=${TEMPLATE_BUCKET} Env=${ENVIRONMENT} DEPLOY_DIR=${DEPLOY_DIR} \
+            --parameter-overrides TemplateBucket=${TEMPLATE_BUCKET} Env=${ENVIRONMENT} DeployDir=${DEPLOY_DIR} \
             --capabilities CAPABILITY_NAMED_IAM
 
       - name: Show Stack Events
